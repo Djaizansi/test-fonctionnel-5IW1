@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  back:
+    container_name: back
+    build: ./
+    env_file:
+      - ./.env
+    volumes:
+      - "./:/app"
+      - "/app/node_modules"
+    ports:
+      - "${PORT_JS}:${PORT_JS}"
+    depends_on:
+      - db
+    stdin_open: true
+    networks:
+      - test-fonctionnel
+
+  db:
+    image: postgres:12-alpine
+    restart: always
+    container_name: db
+    env_file: .env
+    environment:
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_DB: "${DB_NAME}"
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - test-fonctionnel
+
+networks:
+  test-fonctionnel:
+    driver: bridge
+
+volumes:
+  pgdata:
