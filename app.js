@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-require('./models/entity');
+require('./models');
 
 const login = require('./routes/login');
 const test = require('./routes/test');
