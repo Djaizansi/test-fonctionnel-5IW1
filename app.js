@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const authJwt = require('./middleware/authJwt');
 
 require('./models');
 
@@ -21,7 +22,7 @@ app.use((req,res,next) => {
   next();
 });
 
-app.use('/test',test);
+app.use('/test', authJwt, test);
 app.use('/login',login);
 
 module.exports = app;
