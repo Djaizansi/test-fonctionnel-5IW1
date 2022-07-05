@@ -6,8 +6,9 @@ const authJwt = require('./middleware/authJwt');
 
 require('./models');
 
-const login = require('./routes/login');
-const test = require('./routes/test');
+const login = require('./controllers/login');
+const test = require('./controllers/test');
+const users = require('./controllers/users');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use((req,res,next) => {
 });
 
 app.use('/test', authJwt, test);
+app.use('/users',users);
 app.use('/login',login);
 
 module.exports = app;

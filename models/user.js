@@ -1,11 +1,12 @@
 'use strict';
 const { Model } = require('sequelize');
 const bcrypt = require('bcryptjs');
+const UserRole = require('../enum/UserRole');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.hasMany(models.Project,{foreignKey: "user_id", as: "projects"});
+      User.hasMany(models.Project,{foreignKey: "user_id", as: "projects", onDelete: "CASCADE", onUpdate: "CASCADE"});
     }
   }
   User.init({
@@ -31,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    role: {
+      type: DataTypes.ENUM(UserRole.USER, UserRole.ADMIN),
+      defaultValue: UserRole.USER
+    }
   }, {
     sequelize,
     modelName: 'User',
@@ -43,6 +48,11 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.addHook("beforeCreate", async user => {
+    const salt = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(user.password, salt);
+  });
+
+  User.addHook("beforeUpdate", async user => {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
   });

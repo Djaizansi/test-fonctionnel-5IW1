@@ -41,15 +41,19 @@ module.exports = {
         references: {
             model: 'users',
             key: 'id'
-        }
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       category_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: 'categories',
             key: 'id'
-        }
+        },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
       }
     });
   },

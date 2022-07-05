@@ -20,18 +20,19 @@ router.post('/', function(req, res) {
                             email: user.email,
                             first_name: user.first_name,
                             last_name: user.last_name,
+                            role: user.role
                         });
                         res.json({
                             token: accessToken
                         });
                     } else {
                         res.status(401).json({
-                            error: 'Invalid credentials (password)'
+                            error: 'Identifiant incorrect (password)'
                         });
                     }
                 } else {
                     res.status(401).json({
-                        error: 'Invalid credentials'
+                        error: 'Identifiant incorrect'
                     });
                 }
             })

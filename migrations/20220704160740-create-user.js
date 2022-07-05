@@ -1,4 +1,5 @@
 'use strict';
+const UserRole = require("../enum/UserRole");
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('users', {
@@ -37,6 +38,10 @@ module.exports = {
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      role: {
+        type: Sequelize.ENUM(UserRole.ADMIN, UserRole.USER),
+        defaultValue: UserRole.USER
       }
     });
   },
