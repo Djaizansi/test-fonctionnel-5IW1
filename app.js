@@ -6,9 +6,10 @@ const authJwt = require('./middleware/authJwt');
 
 require('./models');
 
-const login = require('./controllers/login');
-const test = require('./controllers/test');
-const users = require('./controllers/users');
+const login = require('./router/login');
+const users = require('./router/users');
+const categories = require('./router/categories');
+const projects = require('./router/projects');
 
 const app = express();
 
@@ -23,8 +24,9 @@ app.use((req,res,next) => {
   next();
 });
 
-app.use('/test', authJwt, test);
 app.use('/users',users);
+app.use('/categories',categories);
+app.use('/projects',projects);
 app.use('/login',login);
 
 module.exports = app;

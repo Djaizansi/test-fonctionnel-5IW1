@@ -1,19 +1,21 @@
-const express = require('express');
-const router = express.Router();
 const models = require('../models');
-const authJwt = require('../middleware/authJwt');
 const UserRole = require("../enum/UserRole");
 const User = models.User;
 
 /* GET Users */
-router.get('/', authJwt, async function(req, res) {
+const getUsers = async (req, res) => {
+    const currentUser = req.user;
     const usersRequest = await User.findAll();
-    const users = usersRequest.map(user => user.dataValues);
-    res.json(users);
-});
+    if(currentUser.role === UserRole.ADMIN) {
+        const users = usersRequest.map(user => user.dataValues);
+        res.json(users);
+    } else {
+        res.status(403).json({message: "Vous n'êtes pas authorisé à accéder à cette ressource"});
+    }
+};
 
 /* POST User */
-router.post('/', async function(req, res) {
+const createUser = async (req, res) => {
     const user = req.body;
     if(user.last_name && user.first_name && user.email && user.password && user.confirmPassword){
         const findUser = await User.findOne({where: {email: user.email}});
@@ -37,10 +39,10 @@ router.post('/', async function(req, res) {
             message: "Tous les champs sont obligatoires"
         });
     }
-});
+};
 
 /* GET User by id */
-router.get('/:id', authJwt, async function(req, res) {
+const getUserById = async (req, res) => {
     const id = req.params.id;
     const currentUser = req.user;
 
@@ -53,10 +55,10 @@ router.get('/:id', authJwt, async function(req, res) {
             message: "Vous n'avez pas les droits pour accéder à cette ressource"
         });
     }
-});
+};
 
 /* PUT User by id */
-router.put('/:id', authJwt, async function(req, res) {
+const updateUser = async (req, res) => {
     const id = req.params.id;
     const user = req.body;
     const currentUser = req.user;
@@ -76,10 +78,10 @@ router.put('/:id', authJwt, async function(req, res) {
             message: "Vous n'avez pas les droits pour accéder à cette ressource"
         });
     }
-});
+};
 
 /* DELETE User by id */
-router.delete('/:id', authJwt, async function(req, res) {
+const deleteUser = async (req, res) => {
     const id = req.params.id;
     const currentUser = req.user;
 
@@ -98,6 +100,12 @@ router.delete('/:id', authJwt, async function(req, res) {
             message: "Une erreur est survenue"
         });
     }
-});
+};
 
-module.exports = router;
+module.exports = {
+    getUsers,
+    createUser,
+    getUserById,
+    updateUser,
+    deleteUser
+}

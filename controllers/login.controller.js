@@ -1,12 +1,9 @@
-const express = require('express');
-const router = express.Router();
 const models = require('../models');
 const User = models.User;
 const bcrypt = require('bcryptjs');
 const generateAccessToken = require("../jwt/generateAccesToken");
 
-/* POST login */
-router.post('/', function(req, res) {
+const login = (req, res) => {
     const { email, password } = req.body;
     if(email && password) {
         User.findOne({
@@ -41,6 +38,8 @@ router.post('/', function(req, res) {
             message: "Entrez un email et un mot de passe"
         });
     }
-});
+};
 
-module.exports = router;
+module.exports = {
+    login
+};
