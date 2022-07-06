@@ -8,7 +8,8 @@
     "migrate": "sequelize db:migrate",
     "seed:run": "sequelize db:seed:undo:all && sequelize db:seed:all",
     "db:drop": "sequelize db:seed:undo:all && sequelize db:drop",
-    "db:create": "sequelize db:create"
+    "db:create": "sequelize db:create",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.26.1",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
+    "jest": "^28.1.2",
     "nodemon": "^2.0.15"
   }
 }
