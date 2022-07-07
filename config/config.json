@@ -4,6 +4,9 @@
     "password": "root",
     "database": "test-fonctionnel-5iw1",
     "host": "db",
+    "query": {
+      "raw": true
+    },
     "dialect": "postgres",
     "define": {
       "timestamps": true,

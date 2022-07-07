@@ -2,14 +2,13 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const authJwt = require('./middleware/authJwt');
 
 require('./models');
 
-const login = require('./router/login');
-const users = require('./router/users');
-const categories = require('./router/categories');
-const projects = require('./router/projects');
+const login = require('./router/login.routes');
+const users = require('./router/users.routes');
+const categories = require('./router/categories.routes');
+const projects = require('./router/projects.routes');
 
 const app = express();
 
