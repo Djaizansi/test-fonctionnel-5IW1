@@ -29,6 +29,7 @@
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
     "jest": "^28.1.2",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.4"
   }
 }

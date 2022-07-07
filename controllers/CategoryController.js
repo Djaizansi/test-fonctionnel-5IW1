@@ -3,7 +3,7 @@ module.exports = function CategoryController(Category, UserRole) {
         /* GET Categories */
         getCategories: async (req, res) => {
             const categories = await Category.findAll();
-            res.json(categories);
+            res.status(200).json(categories);
         },
 
         /* POST Category */
@@ -13,16 +13,12 @@ module.exports = function CategoryController(Category, UserRole) {
                 const findCategory = await Category.findOne({where: {name: category.name}});
                 if(!findCategory){
                     const newCategory = await Category.create(category);
-                    res.json(newCategory);
+                    res.status(201).json(newCategory);
                 }else{
-                    res.status(400).json({
-                        message: "La categorie existe déjà"
-                    });
+                    res.sendStatus(400);
                 }
             }else{
-                res.status(422).json({
-                    message: "Tous les champs sont obligatoires"
-                });
+                res.sendStatus(422);
             }
         },
 
@@ -30,7 +26,11 @@ module.exports = function CategoryController(Category, UserRole) {
         getCategoryById: async (req, res) => {
             const id = req.params.id;
             const categoryRequest = await Category.findOne({where: {id: id}});
-            res.status(categoryRequest ? 200 : 404).json(categoryRequest ? categoryRequest : {});
+            if(categoryRequest){
+                res.status(200).json(categoryRequest);
+            }else{
+                res.sendStatus(404);
+            }
         },
 
         /* PUT Category by id */

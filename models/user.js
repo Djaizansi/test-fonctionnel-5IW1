@@ -1,9 +1,9 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const UserRole = require('../enum/UserRole');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Project,{foreignKey: "user_id", as: "projects", onDelete: "CASCADE", onUpdate: "CASCADE"});

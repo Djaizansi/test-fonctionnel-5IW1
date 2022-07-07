@@ -1,7 +1,7 @@
 'use strict';
-const { Model } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Project extends Model {
     static associate(models) {
       Project.belongsTo(models.User, {foreignKey: 'user_id', as: 'user'});

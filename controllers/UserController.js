@@ -6,8 +6,12 @@ module.exports = function UserController(User){
         getUsers: async (req, res) => {
             const currentUser = req.user;
             if(currentUser.role === UserRole.ADMIN) {
-                const usersRequest = await User.findAll();
-                res.status(200).json(usersRequest);
+                try {
+                    const usersRequest = await User.findAll();
+                    res.status(200).json(usersRequest);
+                }catch(e){
+                    res.status(500).json({message: "Une erreur est survenue"});
+                }
             } else {
                 res.sendStatus(403);
             }
@@ -80,7 +84,6 @@ module.exports = function UserController(User){
 
             if(currentUser.role === UserRole.ADMIN && currentUser.id !== parseInt(id)){
                 const userRequest = await User.findOne({where: {id: id}});
-                console.log(userRequest);
                 if(userRequest){
                     await User.destroy({where: {id: id}});
                     res.sendStatus(204);

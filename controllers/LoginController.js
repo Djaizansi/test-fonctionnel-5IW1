@@ -20,20 +20,14 @@ module.exports = function LoginController(User,bcrypt,generateAccessToken) {
                                     token: accessToken
                                 });
                             } else {
-                                res.status(401).json({
-                                    error: 'Identifiant incorrect (password)'
-                                });
+                                res.sendStatus(401);
                             }
                         } else {
-                            res.status(401).json({
-                                error: 'Identifiant incorrect'
-                            });
+                            res.sendStatus(401);
                         }
                     })
             }else {
-                res.status(400).json({
-                    message: "Entrez un email et un mot de passe"
-                });
+                res.sendStatus(400);
             }
         }
     };

@@ -3,7 +3,7 @@ module.exports = function ProjectController(Project,UserRole){
         /* GET Projects */
         getProjects: async (req, res) => {
             const projects = await Project.findAll();
-            res.json(projects);
+            res.status(200).json(projects);
         },
 
         /* POST Projects */
@@ -11,11 +11,9 @@ module.exports = function ProjectController(Project,UserRole){
             const project = req.body;
             if(project.title && project.description && project.start_date && project.status && project.category_id){
                 const newProject = await Project.create({...project,user_id: req.user.id});
-                res.json(newProject);
+                res.status(201).json(newProject);
             }else{
-                res.status(422).json({
-                    message: "Tous les champs sont obligatoires"
-                });
+                res.sendStatus(422);
             }
         },
 
@@ -23,7 +21,11 @@ module.exports = function ProjectController(Project,UserRole){
         getProjectById: async (req, res) => {
             const id = req.params.id;
             const projectRequest = await Project.findOne({where: {id: id}});
-            res.status(projectRequest ? 200 : 404).json(projectRequest ? projectRequest : {});
+            if(projectRequest){
+                res.status(200).json(projectRequest);
+            }else{
+                res.sendStatus(404);
+            }
         },
 
         /* PUT Project by id */
@@ -38,14 +40,10 @@ module.exports = function ProjectController(Project,UserRole){
                     const projectResponse = await projectRequest.update(project);
                     res.status(200).json(projectResponse);
                 }else{
-                    res.status(403).json({
-                        message: "Vous n'avez pas les droits nécessaires"
-                    });
+                    res.sendStatus(403);
                 }
             }else{
-                res.status(404).json({
-                    message: "Le project n'existe pas"
-                });
+                res.sendStatus(404);
             }
         },
 
@@ -60,14 +58,10 @@ module.exports = function ProjectController(Project,UserRole){
                     const projectResponse = await projectRequest.destroy();
                     res.status(200).json(projectResponse);
                 }else{
-                    res.status(403).json({
-                        message: "Vous n'avez pas les droits nécessaires"
-                    });
+                    res.sendStatus(403);
                 }
             }else{
-                res.status(404).json({
-                    message: "Le project n'existe pas"
-                });
+                res.sendStatus(404);
             }
         }
     }
