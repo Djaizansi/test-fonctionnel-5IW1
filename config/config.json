@@ -19,7 +19,15 @@
     "password": "root",
     "database": "test-fonctionnel-5iw1",
     "host": "db",
-    "dialect": "postgres"
+    "query": {
+      "raw": true
+    },
+    "dialect": "postgres",
+    "define": {
+      "timestamps": true,
+      "freezeTableName": true,
+      "underscored": true
+    }
   },
   "production": {
     "username": "root",

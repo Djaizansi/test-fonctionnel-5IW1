@@ -1,13 +1,14 @@
 const supertest = require('supertest');
 const App = require('../app');
 const {sequelize} = require('../models');
-const userFixture = require('./fixtures/user.fixture');
-const categoryFixture = require('./fixtures/category.fixture');
-
+let userFixture, categoryFixture;
 let request, user, category;
 
 beforeAll(async () => {
     request = supertest(App);
+    jest.resetModules();
+    userFixture = require('./fixtures/user.fixture');
+    categoryFixture = require('./fixtures/category.fixture');
 });
 
 beforeEach(async () => {
@@ -17,12 +18,15 @@ beforeEach(async () => {
     user = await userFixture(sequelize);
     category = await categoryFixture(sequelize);
 
+    const userValue = user[0].dataValues;
+    const categoryValue = category.dataValues;
+
     const response = await request.post('/login').set('Content-Type', 'application/json').send({
-        email: user[0].email,
-        password: user[0].password
+        email: userValue.email,
+        password: userValue.password
     });
 
-    user.token = response.body.token;
+    userValue.token = response.body.token;
 });
 
 afterEach(async () => {
